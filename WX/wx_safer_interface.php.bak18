@@ -1,0 +1,93 @@
+<?php
+//主函数
+define("TOKEN", "safer_weixin");
+
+$wechatObj = new wechatCallbackapiTest();
+
+if(!isset($_GET['echostr']))
+{
+    $wechatObj->responseMsg();
+}
+else
+{
+    $wechatObj->valid();
+}
+
+class wechatCallbackapiTest
+{
+    public function valid()
+    {
+        $echoStr = $_GET["echostr"];
+        if($this->checkSignature())
+        {
+            echo $echoStr;
+            exit;
+        }
+    }
+
+    private function checkSignature()
+    {
+        $signature = $_GET["signature"];
+        $timestamp = $_GET["timestamp"];
+        $nonce = $_GET["nonce"];
+        $token = TOKEN;
+        $tmpArr = array($token, $timestamp, $nonce);
+        sort($tmpArr);
+        $tmpStr = implode($tmpArr);
+        $tmpStr = sha1($tmpStr);
+
+        if($tmpStr == $signature)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public function responseMsg()
+    {
+        //获取微信发送数据
+        $postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
+
+        if (!empty($postStr)){
+            //解析数据
+            $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
+            
+            //从用户发送的消息中获取消息类型
+            $form_MsgType = $postObj->MsgType;
+
+            //根据收到的消息类型进行消息回复
+            switch($form_MsgType)
+            {
+                case "text":
+                    $result = $this->receiveText($postObj);
+                    break;
+                case "image":
+                    $result = $this->receiveText($postObj);
+                    break;
+                case "voice":
+                    $result = $this->receiveText($postObj);
+                    break;
+                case "video":
+                    $result = $this->receiveText($postObj);
+                    break;
+                default:
+                    $result = "未知的消息类型：" . $form_MsgType;
+                    break;
+            }
+            echo $result;
+        }
+        else 
+        {
+              echo "Don't receive the message of weixin_server(服务器无法获取到用户信息)";
+              exit;
+        }
+    }
+
+    include("wx_safer_receive.php");
+    include("wx_safer_transmit.php");
+}
+
+?>

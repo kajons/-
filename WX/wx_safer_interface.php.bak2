@@ -1,0 +1,105 @@
+<?php
+//装载模板文件
+include_once("wx_tpl.php");
+
+//获取微信发送数据
+$postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
+
+  //返回回复数据
+if (!empty($postStr)){
+        echo "testing";  
+    	//解析数据
+          $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
+    	//发送消息方ID
+          $fromUsername = $postObj->FromUserName;
+    	//接收消息方ID
+          $toUsername = $postObj->ToUserName;
+   	 //消息类型
+          $form_MsgType = $postObj->MsgType;
+
+
+	if($form_MsgType=="text")
+	{
+		//获取用户发送的文字
+	}
+
+    	//事件消息
+          if($form_MsgType=="event")
+          {
+            //获取事件类型
+            $form_Event = $postObj->Event;
+
+            //订阅事件
+            if($form_Event=="subscribe")
+            {
+
+	      //回复欢迎图文消息
+	      $resultStr="<xml>\n
+	           <ToUserName><![CDATA[".$fromUsername."]]></ToUserName>\n
+        	   <FromUserName><![CDATA[".$toUsername."]]></FromUserName>\n
+          	   <CreateTime>".time()."</CreateTime>\n
+           	   <MsgType><![CDATA[news]]></MsgType>\n
+	           <ArticleCount>5</ArticleCount>\n
+	           <Articles>\n";
+
+
+	      //添加图文消息
+	      $resultStr.="<item>\n
+	           <Title><![CDATA[公司简介]]></Title>\n
+	           <Description><![CDATA[]]></Description>\n
+	           <PicUrl><![CDATA[https://mmbiz.qlogo.cn/mmbiz/fnv7SQp8wpLsr9sF1s3ShcWiajB9uwTJ2G0JJ9UsLDwicpMe4XTnFKVicOlz0ibriaIksapX6nsLdJIfhrvKC9pm3ZQ/0?wx_fmt=jpeg]]></PicUrl>\n
+	           <Url><![CDATA[http://mp.weixin.qq.com/s?__biz=MjM5NzMyMjE5Mw==&mid=505916625&idx=1&sn=93a857839f718c467671f68cc5527227&scene=18#wechat_redirect]]></Url>\n
+	           </item>\n";
+
+	      $resultStr.="<item>\n
+	           <Title><![CDATA[发展历程]]></Title>\n
+	           <Description><![CDATA[]]></Description>\n
+	           <PicUrl><![CDATA[https://mmbiz.qlogo.cn/mmbiz/fnv7SQp8wpKZ86BTChHMVsDaQNQhQVfoM6h2VLgc3LKB7E3RwEicfahfEia2qCh9X3cGAwZtAdbSfteVicmRI8BOg/0]]></PicUrl>\n
+	           <Url><![CDATA[http://mp.weixin.qq.com/s?__biz=MjM5NzMyMjE5Mw==&mid=505916625&idx=2&sn=605c7cddbbf97f36c175c8095ae886c2&scene=18#wechat_redirect]]></Url>\n
+	           </item>\n";
+
+	      $resultStr.="<item>\n
+	           <Title><![CDATA[企业文化]]></Title>\n
+	           <Description><![CDATA[]]></Description>\n
+	           <PicUrl><![CDATA[https://mmbiz.qlogo.cn/mmbiz/fnv7SQp8wpKZ86BTChHMVsDaQNQhQVfoM6h2VLgc3LKB7E3RwEicfahfEia2qCh9X3cGAwZtAdbSfteVicmRI8BOg/0]]></PicUrl>\n
+	           <Url><![CDATA[http://mp.weixin.qq.com/s?__biz=MjM5NzMyMjE5Mw==&mid=505916625&idx=3&sn=b48db358210e6b58976abbeafea6fca0&scene=18#wechat_redirect]]></Url>\n
+	           </item>\n";
+
+	      $resultStr.="<item>\n
+	           <Title><![CDATA[联系我们]]></Title>\n
+	           <Description><![CDATA[]]></Description>\n
+	           <PicUrl><![CDATA[https://mmbiz.qlogo.cn/mmbiz/fnv7SQp8wpI0nP5DhpbEmiaoQdibWLsnQ1GlHKWpxKrNH8D6kfn9r8uFP52SbfdQKZgyfvkYyaVR55D5xqibt7ypA/0?wx_fmt=jpeg]]></PicUrl>\n
+	           <Url><![CDATA[http://mp.weixin.qq.com/s?__biz=MjM5NzMyMjE5Mw==&mid=505916625&idx=4&sn=d58b23cc9b9abd56e0843766b77a95ec&scene=18#wechat_redirect]]></Url>\n
+	           </item>\n";
+
+	      $resultStr.="<item>\n
+	           <Title><![CDATA[销售网络]]></Title>\n
+	           <Description><![CDATA[]]></Description>\n
+	           <PicUrl><![CDATA[https://mmbiz.qlogo.cn/mmbiz/fnv7SQp8wpJrsqGE5pM27sNglXp9ftv6cXO26uKd6MnldLuwXOW0GbVJKqU5ibFAKD561RpicqIz6R9wwQYMbDWw/0?wx_fmt=png]]></PicUrl>\n
+	           <Url><![CDATA[http://mp.weixin.qq.com/s?__biz=MjM5NzMyMjE5Mw==&mid=505916625&idx=5&sn=bc57037053d9e76e76500a3bd53b9655&scene=18#wechat_redirect]]></Url>\n
+	           </item>\n";
+
+	      //结尾部分代码
+	      $resultStr.="</Articles>\n
+	           <FuncFlag>1</FuncFlag>\n
+               </xml>\n";
+	      /*
+              //回复欢迎文字消息
+              $msgType = "text";
+              $contentStr = "翔飞科技欢迎您！[玫瑰]";
+              $resultStr = sprintf($textTpl, $fromUsername, $toUsername, time(), $msgType, $contentStr);
+	      */
+              echo $resultStr;
+              exit;
+            }
+          
+          }
+          
+  }
+  else 
+  {
+          echo "errorConten\n";
+          exit;
+  }
+
+?>

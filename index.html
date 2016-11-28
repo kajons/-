@@ -1,0 +1,165 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>登录页面</title>
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<script src="/js/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="js/jquery-1.4.2.min.js" type="text/javascript"></script>
+<script src="js/jquery.cookie.js" type="text/javascript"></script>
+<script src="/js/scripy.js" type="text/javascript"></script>
+<script src="/edition/index_config.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function(){
+	$.divselect("#divselect","#inputselect");
+});
+</script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		if($.cookie("rmbUser") == "true"){
+			$("#name").val($.cookie("username"));
+			$("#password").val($.cookie("password"));
+		}
+	});
+</script>
+</head>
+<body>
+<!--注册页面-->
+<div id="div_zhuce">
+	<div id="div_hx">
+	   <b id="zhuce_head"><script>document.write(langtr(zhuce_head))</script></b>
+	   <form style="height: 100%; width: 100%;" autocomplete="off" >
+	   <div id="zhuce_dengluk">
+	    <input id="zhuce_name" name="RName" type="text" maxlength="20" placeholder="" />
+	   </div>
+	   <img id="zhuce_ren" src="image/注册页面/ren.png" />
+	   <img id="zhuce_suo" src="image/注册页面/suo.png" />
+	   <div id="zhuce_dengluk1">
+	    <input id="zhuce_pass" name="RPwd0" type="password" maxlength="20" placeholder="" />
+	   </div>
+		
+	   <img id="zhuce_suos" src="image/注册页面/suo.png" />
+	   <div id="zhuce_dengluk2">
+	    <input id="zhuce_passs" name="RPwd1" type="password" maxlength="20" placeholder="" />
+	   </div>
+	   
+	   <img id="zhuce_yx" src="image/注册页面/youxiang.png" />
+	   <div id="zhuce_dengluk3">
+	    <input id="zhuce_youxiang" name="Email" type="text" maxlength="50" placeholder="" />
+	   </div>
+	   
+	   <img id="zhuce_lx" src="image/注册页面/video.png" />
+	   <div id="zhuce_dengluk4">
+	    <input id="zhuce_luxiang" name="iVPath" type="text" value="d:/video/" />
+	   </div>
+	   
+	   <img id="zhuce_zx" src="image/注册页面/picture.png" />
+	   <div id="zhuce_dengluk5">
+	    <input id="zhuce_zhaoxiang" name="iPPath" type="text" value="d:/picture/" />
+	   </div>
+	   
+	   <div id="zhuce_baocun">
+	     <button id="bctxt" type="button" name="sure"><script>document.write(langtr(bctxt))</script></button>
+	   </div>
+	   
+	   <div id="zhuce_quxiao" onclick="clears()">
+	     <button id="qxtxt" type="button"><script>document.write(langtr(qxtxt))</script></button>
+	   </div>
+	   </form>
+	</div>
+</div>
+
+<!--忘记密码页面-->
+<div id="div_mima">
+	<div id="div_mihx">
+		<b id="mima_head"><script>document.write(langtr(mima_head))</script></b>
+		
+		<form style="height: 100%; width: 100%;" autocomplete="off" >
+		<div id="mima_dengluk">
+			<input id="mima_name" name="RName" type="text" maxlength="20" placeholder="" />
+		</div>
+		
+		<img id="mima_ren" src="image/找回密码/ren.png" />
+		<img id="mima_yxt" src="image/找回密码/youxiang.png" />
+		<div id="mima_dengluk1">
+			<input id="mima_yx" name="Email" type="text" maxlength="50" placeholder="" />
+		</div>
+		<div id="mima_queding">
+			<button id="sure" type="button" name="sure" value=""><script>document.write(langtr(sure))</script></button>
+		</div>
+		<div id="mima_quxiao" onclick="guanbi()">
+			<button id="qxtext" type="button"><script>document.write(langtr(qxtext))</script></button>
+		</div>
+		</form>
+	</div>
+</div>
+
+<!--老用户页面-->
+<div id="div_old">
+	<div id="div_oldhx">
+		<b id="old_head"><script>document.write(langtr(old_head))</script></b>
+		<form style="height: 100%; width: 100%;" autocomplete="off" >
+		<img id="old_ren" src="image/找回密码/ren.png" />
+		<div id="old_dengluk">
+			<input id="old_name" name="old_name" type="text" maxlength="20" placeholder="" />
+		</div>
+		
+		<img id="old_youxiang" src="image/找回密码/youxiang.png" />
+		<div id="old_dengluk1">
+			<input id="old_yx" name="old_yx" type="text" maxlength="50" placeholder="" />
+		</div>
+		<div id="old_queding" onkeydown="old()">
+			<button id="old_sure" type="button"><script>document.write(langtr(old_sure))</script>
+			</button>
+		</div>
+		<div id="old_quxiao" onclick="guanbi1()">
+			<button id="qxtexts" type="button"><script>document.write(langtr(qxtexts))</script>
+			</button>
+		</div>
+		</form>
+	</div>
+</div>
+
+<!--登录页面-->
+<div id="hx">
+  <form id="yc" style="height: 100%; width: 100%;">
+	<b id="head"><script>document.write(langtr(head))</script></b>
+
+    <img id="ren" src="image/ren.png" />
+      <div id="dengluk">
+	<input id="name" name="UNA" type="text" value="" maxlength="20" placeholder="" />
+      </div>
+   
+    <img id="suo" src="image/suo.png" />
+	<div id="dengluk1">
+	<input id="password"  name="UPD" type="password" value="" maxlength="20" placeholder="" />
+   	</div>
+
+   <div id="denglu_button">
+	<button id="login" type="button"  name=login value=1><script>document.write(langtr(button))</script></button>
+   </div>
+   
+    <input type=hidden name="yy" value="zh">
+    <input type=hidden name="REM1" value="0">
+  	 <div id="gouxuan" onclick="changeImage()">
+	 <img id="gx" src="image/danxuankuangin.png"/>
+	 <strong id="save"><script>document.write(langtr(save))</script></strong>
+   </div>
+	   
+	<a id="zhuce" onclick="changeImage1()"><script>document.write(langtr(zhuce))</script></a>
+	<a id="wangjimima" onclick="changeImage2()"><script>document.write(langtr(wangji))</script></a>
+	  
+	<div id="divselect">
+    		<cite id="yuyan">简体中文</cite>
+    		<ul>
+      			<li><a id="2">简体中文</a></li>
+      			<li><a id="1" style="text-decoration: none;">English</a></li>
+    		</ul>
+	</div>
+  </form>
+	<a id="old_user" onclick="show_box()"><script>document.write(langtr(old_user))</script></a>
+</div>
+
+	
+</body>
+</html>

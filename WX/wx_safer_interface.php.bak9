@@ -1,0 +1,393 @@
+<?php
+//装载模板文件
+include_once("wx_tpl.php");
+include_once("base-class.php");
+
+
+//新建sae数据库类,此为 SAE 服务特有类，在普通服务器上无法实现
+//$mysql = new SaeMysql();
+
+//新建Memcache类
+//$mc=memcache_init();
+
+//获取微信发送数据
+$postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
+
+  //返回回复数据
+if (!empty($postStr)){
+    echo "testing";  
+    //解析数据
+      $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
+    //发送消息方ID
+      $fromUsername = $postObj->FromUserName;
+    //接收消息方ID
+      $toUsername = $postObj->ToUserName;
+    //消息类型
+      $form_MsgType = $postObj->MsgType;
+
+    //文本消息
+    if($form_MsgType=="text")
+    {
+        //获取用户发送的文字
+        $form_Content = trim($postObj->Content);
+        
+        /*
+        //抓取表情
+        $s = new SaeStorege(); //可能是 SAE 平台开发特有的一个类
+        $->write('weixincourse' , 'bq.txt' , $form_Content);
+        exit
+        */
+
+        //文字回复音乐1
+        if($form_Content == "/::)")
+        {
+            $msgType = "music";
+            $resultStr = sprintf(
+                $musicTpl,
+                $fromUsername,
+                $toUsername,
+                $time,
+                $msgType,
+                "我的歌声里",
+                "曲婉婷",
+                "http://www.sficam.com/WX/mp3/mysong.mp3",
+                "http://www.sficam.com/WX/mp3/mysong.mp3");
+
+            echo $resultStr;
+            exit;
+        }
+
+        //文字回复音乐2
+        if($form_Content == "/:8-)")
+        {
+            $msgType = "music";
+            $resultStr = sprintf(
+                $musicTpl,
+                $fromUsername,
+                $toUsername,
+                $time,
+                $msgType,
+                "梁祝",
+                "卓文宣",
+                "http://www.sficam.com/WX/mp3/lz.mp3",
+                "http://www.sficam.com/WX/mp3/lz.mp3");
+
+            echo $resultStr;
+            exit;
+        }
+
+        //文字回复音乐3
+        if($form_Content == "/::O")
+        {
+            $msgType = "music";
+            $resultStr = sprintf(
+                $musicTpl,
+                $fromUsername,
+                $toUsername,
+                $time,
+                $msgType,
+                "下一个路口",
+                "李宇春",
+                "http://www.sficam.com/WX/mp3/lk.mp3",
+                "http://www.sficam.com/WX/mp3/lk.mp3");
+
+            echo $resultStr;
+            exit;
+        }
+
+
+        //文字回复图文
+        if($form_Content == "产品")
+        {
+            $return_str = "请输入字母编码浏览相应产品：\n\n";
+            $return_arr = array("    a: 模拟机产品\n", "    b: 网络机产品\n", "    c: 录像机产品\n", "    d: 解码器产品\n", "    e: 家庭应用产品\n", "    f: 产品配置软件");
+            $return_str .= implode(" ", $return_arr);
+            $msgType = "text";
+            $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $return_str);
+            echo $resultStr;
+            exit;
+        }
+
+        //回复分类编码查看产品
+        if($form_Content == "a")
+        {
+            $resultStr="<xml>\n
+            <ToUserName><![CDATA[".$fromUsername."]]></ToUserName>\n
+            <FromUserName><![CDATA[".$toUsername."]]></FromUserName>\n
+            <CreateTime>".time()."</CreateTime>\n
+            <MsgType><![CDATA[news]]></MsgType>\n
+            <ArticleCount>10</ArticleCount>\n
+            <Articles>\n";
+
+            //菜谱详细数组
+            $return_arr = array(
+                array(
+                    "模拟高清：XXX-XXX",
+                    "https://mmbiz.qlogo.cn/mmbiz/fnv7SQp8wpJrsqGE5pM27sNglXp9ftv6MOKO0T8cjicn5Ev7RHLqsOFkEvvgmOQsCricvjxkw4WcelsOVOHavniaw/0?wx_fmt=png",
+                    "http://mp.weixin.qq.com/s?__biz=MjM5NzMyMjE5Mw==&mid=505916625&idx=5&sn=bc57037053d9e76e76500a3bd53b9655&scene=18#wechat_redirect"
+                ),
+                array(
+                    "模拟高清：XXX-XXX",
+                    "https://mmbiz.qlogo.cn/mmbiz/fnv7SQp8wpJrsqGE5pM27sNglXp9ftv6MOKO0T8cjicn5Ev7RHLqsOFkEvvgmOQsCricvjxkw4WcelsOVOHavniaw/0?wx_fmt=png",
+                    "http://mp.weixin.qq.com/s?__biz=MjM5NzMyMjE5Mw==&mid=505916625&idx=5&sn=bc57037053d9e76e76500a3bd53b9655&scene=18#wechat_redirect"
+                ),
+                array(
+                    "模拟高清：XXX-XXX",
+                    "https://mmbiz.qlogo.cn/mmbiz/fnv7SQp8wpJrsqGE5pM27sNglXp9ftv6MOKO0T8cjicn5Ev7RHLqsOFkEvvgmOQsCricvjxkw4WcelsOVOHavniaw/0?wx_fmt=png",
+                    "http://mp.weixin.qq.com/s?__biz=MjM5NzMyMjE5Mw==&mid=505916625&idx=5&sn=bc57037053d9e76e76500a3bd53b9655&scene=18#wechat_redirect"
+                ),
+                array(
+                    "模拟高清：XXX-XXX",
+                    "https://mmbiz.qlogo.cn/mmbiz/fnv7SQp8wpJrsqGE5pM27sNglXp9ftv6MOKO0T8cjicn5Ev7RHLqsOFkEvvgmOQsCricvjxkw4WcelsOVOHavniaw/0?wx_fmt=png",
+                    "http://mp.weixin.qq.com/s?__biz=MjM5NzMyMjE5Mw==&mid=505916625&idx=5&sn=bc57037053d9e76e76500a3bd53b9655&scene=18#wechat_redirect"
+                ),
+                array(
+                    "模拟高清：XXX-XXX",
+                    "https://mmbiz.qlogo.cn/mmbiz/fnv7SQp8wpJrsqGE5pM27sNglXp9ftv6MOKO0T8cjicn5Ev7RHLqsOFkEvvgmOQsCricvjxkw4WcelsOVOHavniaw/0?wx_fmt=png",
+                    "http://mp.weixin.qq.com/s?__biz=MjM5NzMyMjE5Mw==&mid=505916625&idx=5&sn=bc57037053d9e76e76500a3bd53b9655&scene=18#wechat_redirect"
+                ),
+                array(
+                    "模拟高清：XXX-XXX",
+                    "https://mmbiz.qlogo.cn/mmbiz/fnv7SQp8wpJrsqGE5pM27sNglXp9ftv6MOKO0T8cjicn5Ev7RHLqsOFkEvvgmOQsCricvjxkw4WcelsOVOHavniaw/0?wx_fmt=png",
+                    "http://mp.weixin.qq.com/s?__biz=MjM5NzMyMjE5Mw==&mid=505916625&idx=5&sn=bc57037053d9e76e76500a3bd53b9655&scene=18#wechat_redirect"
+                ), 
+                array(
+                    "模拟高清：XXX-XXX",
+                    "https://mmbiz.qlogo.cn/mmbiz/fnv7SQp8wpJrsqGE5pM27sNglXp9ftv6MOKO0T8cjicn5Ev7RHLqsOFkEvvgmOQsCricvjxkw4WcelsOVOHavniaw/0?wx_fmt=png",
+                    "http://mp.weixin.qq.com/s?__biz=MjM5NzMyMjE5Mw==&mid=505916625&idx=5&sn=bc57037053d9e76e76500a3bd53b9655&scene=18#wechat_redirect"
+                ),
+                array(
+                    "模拟高清：XXX-XXX",
+                    "https://mmbiz.qlogo.cn/mmbiz/fnv7SQp8wpJrsqGE5pM27sNglXp9ftv6MOKO0T8cjicn5Ev7RHLqsOFkEvvgmOQsCricvjxkw4WcelsOVOHavniaw/0?wx_fmt=png",
+                    "http://mp.weixin.qq.com/s?__biz=MjM5NzMyMjE5Mw==&mid=505916625&idx=5&sn=bc57037053d9e76e76500a3bd53b9655&scene=18#wechat_redirect"
+                ),
+                array(
+                    "模拟高清：XXX-XXX",
+                    "https://mmbiz.qlogo.cn/mmbiz/fnv7SQp8wpJrsqGE5pM27sNglXp9ftv6MOKO0T8cjicn5Ev7RHLqsOFkEvvgmOQsCricvjxkw4WcelsOVOHavniaw/0?wx_fmt=png",
+                    "http://mp.weixin.qq.com/s?__biz=MjM5NzMyMjE5Mw==&mid=505916625&idx=5&sn=bc57037053d9e76e76500a3bd53b9655&scene=18#wechat_redirect"
+                ),
+                array(
+                    "下一页请输入“n”,返回输入“产品”",
+                    "https://mmbiz.qlogo.cn/mmbiz/fnv7SQp8wpJrsqGE5pM27sNglXp9ftv6MOKO0T8cjicn5Ev7RHLqsOFkEvvgmOQsCricvjxkw4WcelsOVOHavniaw/0?wx_fmt=png",
+                    "http://mp.weixin.qq.com/s?__biz=MjM5NzMyMjE5Mw==&mid=505916625&idx=5&sn=bc57037053d9e76e76500a3bd53b9655&scene=18#wechat_redirect"
+                ),
+            );
+
+            //将上面的数组进行循环转化一下
+            foreach($return_arr as $value)
+            {
+                $resultStr.="<item>\n
+                <Title><![CDATA[".$value[0]."]]></Title>\n
+                <Description><![CDATA[]]></Description>\n
+                <PicUrl><![CDATA[".$value[1]."]]></PicUrl>\n
+                <Url><![CDATA[".$value[2]."]]></Url>\n
+                </item>\n";
+            }
+
+            $resultStr.="</Articles>\n
+            <FuncFlag>1</FuncFlag>\n
+            </xml>";
+
+            echo $resultStr;
+            exit;
+        }
+
+        //默认回复
+        $msgType = "text";
+        $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, "请输入“产品”查看产品信息");
+        echo $resultStr;
+        exit;
+
+
+        /*测试内容==文字回复文字
+        //如果发送的内容不为空，则回复用户相同的文字内容
+        if(!empty($form_Content))
+        {
+            $msgType = "text";
+            $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $form_Content);
+            echo $resultStr;
+            exit;
+        }
+        //否则提示用户输入内容
+        else
+        {
+            $msgType = "text";
+            $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, "请输入些什么吧... ...");
+            echo $resultStr;
+            exit;
+        }
+        */
+    }
+
+
+    //事件消息
+    if($form_MsgType == "event")
+    {
+        //获取事件类型
+        $form_Event = $postObj->Event;
+        
+        //订阅事件
+        if($form_Event == "subscribe")
+        {
+
+            //回复欢迎图文消息
+            $resultStr="<xml>\n
+            <ToUserName><![CDATA[".$fromUsername."]]></ToUserName>\n
+            <FromUserName><![CDATA[".$toUsername."]]></FromUserName>\n
+            <CreateTime>".time()."</CreateTime>\n
+            <MsgType><![CDATA[news]]></MsgType>\n
+            <ArticleCount>5</ArticleCount>\n
+            <Articles>\n";
+
+
+            //添加图文消息
+            $resultStr.="<item>\n
+            <Title><![CDATA[公司简介]]></Title>\n
+            <Description><![CDATA[]]></Description>\n
+            <PicUrl><![CDATA[https://mmbiz.qlogo.cn/mmbiz/fnv7SQp8wpLsr9sF1s3ShcWiajB9uwTJ2G0JJ9UsLDwicpMe4XTnFKVicOlz0ibriaIksapX6nsLdJIfhrvKC9pm3ZQ/0?wx_fmt=jpeg]]></PicUrl>\n
+            <Url><![CDATA[http://mp.weixin.qq.com/s?__biz=MjM5NzMyMjE5Mw==&mid=505916625&idx=1&sn=93a857839f718c467671f68cc5527227&scene=18#wechat_redirect]]></Url>\n
+            </item>\n";
+
+            $resultStr.="<item>\n
+            <Title><![CDATA[发展历程]]></Title>\n
+            <Description><![CDATA[]]></Description>\n
+            <PicUrl><![CDATA[https://mmbiz.qlogo.cn/mmbiz/fnv7SQp8wpKZ86BTChHMVsDaQNQhQVfoM6h2VLgc3LKB7E3RwEicfahfEia2qCh9X3cGAwZtAdbSfteVicmRI8BOg/0]]></PicUrl>\n
+            <Url><![CDATA[http://mp.weixin.qq.com/s?__biz=MjM5NzMyMjE5Mw==&mid=505916625&idx=2&sn=605c7cddbbf97f36c175c8095ae886c2&scene=18#wechat_redirect]]></Url>\n
+            </item>\n";
+
+            $resultStr.="<item>\n
+            <Title><![CDATA[企业文化]]></Title>\n
+            <Description><![CDATA[]]></Description>\n
+            <PicUrl><![CDATA[https://mmbiz.qlogo.cn/mmbiz/fnv7SQp8wpKZ86BTChHMVsDaQNQhQVfoM6h2VLgc3LKB7E3RwEicfahfEia2qCh9X3cGAwZtAdbSfteVicmRI8BOg/0]]></PicUrl>\n
+            <Url><![CDATA[http://mp.weixin.qq.com/s?__biz=MjM5NzMyMjE5Mw==&mid=505916625&idx=3&sn=b48db358210e6b58976abbeafea6fca0&scene=18#wechat_redirect]]></Url>\n
+            </item>\n";
+
+            $resultStr.="<item>\n
+            <Title><![CDATA[联系我们]]></Title>\n
+            <Description><![CDATA[]]></Description>\n
+            <PicUrl><![CDATA[https://mmbiz.qlogo.cn/mmbiz/fnv7SQp8wpI0nP5DhpbEmiaoQdibWLsnQ1GlHKWpxKrNH8D6kfn9r8uFP52SbfdQKZgyfvkYyaVR55D5xqibt7ypA/0?wx_fmt=jpeg]]></PicUrl>\n
+            <Url><![CDATA[http://mp.weixin.qq.com/s?__biz=MjM5NzMyMjE5Mw==&mid=505916625&idx=4&sn=d58b23cc9b9abd56e0843766b77a95ec&scene=18#wechat_redirect]]></Url>\n
+            </item>\n";
+
+            $resultStr.="<item>\n
+            <Title><![CDATA[销售网络]]></Title>\n
+            <Description><![CDATA[]]></Description>\n
+            <PicUrl><![CDATA[https://mmbiz.qlogo.cn/mmbiz/fnv7SQp8wpJrsqGE5pM27sNglXp9ftv6cXO26uKd6MnldLuwXOW0GbVJKqU5ibFAKD561RpicqIz6R9wwQYMbDWw/0?wx_fmt=png]]></PicUrl>\n
+            <Url><![CDATA[http://mp.weixin.qq.com/s?__biz=MjM5NzMyMjE5Mw==&mid=505916625&idx=5&sn=bc57037053d9e76e76500a3bd53b9655&scene=18#wechat_redirect]]></Url>\n
+            </item>\n";
+
+            //结尾部分代码
+            $resultStr.="</Articles>\n
+            <FuncFlag>1</FuncFlag>\n
+            </xml>";
+/*            
+            //回复欢迎文字消息
+            $msgType = "text";
+            $contentStr = "翔飞科技欢迎您！[玫瑰]";
+            $resultStr = sprintf($textTpl, $fromUsername, $toUsername, time(), $msgType, $contentStr);
+  */          
+            echo $resultStr;
+            exit;
+        }
+
+        //获取自定义菜单点击事件
+        if($form_Event=="CLICK")
+        {
+           
+            //获取菜单key值
+            $form_EventKey = trim($postObj->EventKey);
+            
+           
+              //获取wemedia介绍  
+            if($form_EventKey=="WeMedia_001")
+            {
+                
+                $msgType = "news";
+                $resultStr = sprintf($newsTpl, $fromUsername, $toUsername, time(), $msgType, 1,"WeMedia联盟介绍",
+                                     "WeMedia是微信自媒体第一联盟，目前联盟公众账号传播覆盖超过5,000,000人，主要为中高端人群。（微信搜索“wemedia“关注我们）",
+                                     "http://weinxincourse.b0.upaiyun.com/wemedia_human.jpg",
+                                     "http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5NDczMzQ0MQ==&appmsgid=10000001&itemidx=1&sign=c1b1567896ae68386b7ed935c7038811");
+                echo $resultStr;
+                exit;  
+            }              
+            //获取wemedia活动
+            if($form_EventKey=="WeMedia_002")
+            {
+                
+                $msgType = "news";
+                $resultStr = sprintf($newsTpl, $fromUsername, $toUsername, time(), $msgType, 1,"WeMedia开放日沙龙 | O2O的想象空间",
+                                     "WeMedia邀请O2O领域领军企业的实战领袖，资深自媒体人坐而论道，分享经验，交流观点，共同探讨O2O行业的想象空间。",
+                                     "http://weinxincourse.b0.upaiyun.com/wemedia_openday_1.jpg",
+                                     "http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5NDczMzQ0MQ==&appmsgid=10000081&itemidx=1&sign=9032edfad5f7e6cff0c7c48fdd197b7a#wechat_redirect");
+                echo $resultStr;
+                exit;  
+            }
+            //获取wemedia每日一曲
+            if($form_EventKey=="WeMedia_003")
+            {
+                
+                $msgType = "music";
+                $resultStr = sprintf($musicTpl, $fromUsername, $toUsername, $time, $msgType, "董小姐","木质般的嗓音","http://ztalk-music.b0.upaiyun.com/music/dongxiaojie.mp3","http://ztalk-music.b0.upaiyun.com/music/dongxiaojie.mp3");
+                echo $resultStr;
+                exit;
+            }
+            //获取广告刊例
+            if($form_EventKey=="Ad_0")
+            {
+                     
+                $msgType = "news";
+                $resultStr = sprintf($newsTpl, $fromUsername, $toUsername, time(), $msgType, 1,"WeMedia联盟广告刊例",
+                                     "微信自媒体广告，主要针对使用智能手机的中高端人群，以微信的高到达率为手段，主打精准营销，便于品牌价值传播，并且可以实时与用户交互沟通，获取效果反馈。（微信搜索“wemedia”关注我们）",
+                                     "http://weinxincourse.b0.upaiyun.com/wemedia_ad.jpg",
+                                     "http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5NDczMzQ0MQ==&appmsgid=10000005&itemidx=1&sign=b434e784828d341b845cf1d083727360");
+                echo $resultStr;
+                exit;  
+            }
+            //获取广告案例
+            if($form_EventKey=="Ad_1")
+            {
+                     
+                $msgType = "news";
+                $resultStr = sprintf($newsTpl, $fromUsername, $toUsername, time(), $msgType, 1,"微库广告效果报告",
+                                     "微信自媒体广告，主要针对使用智能手机的中高端人群，以微信的高到达率为手段，主打精准营销，便于品牌价值传播，并且可以实时与用户交互沟通，获取效果反馈。（微信搜索“wemedia”关注我们）",
+                                     "http://weinxincourse.b0.upaiyun.com/weiku.jpg",
+                                     "http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5NDczMzQ0MQ==&appmsgid=10000017&itemidx=1&sign=8c972741a04c37cfe636245ce9680540");
+                echo $resultStr;
+                exit;  
+            }
+          //获取广告案例
+            if($form_EventKey=="Ad_2")
+            {
+                     
+                $msgType = "news";
+                $resultStr = sprintf($newsTpl, $fromUsername, $toUsername, time(), $msgType, 1,"步步高VivoXplay手机广告分析报告",
+                                     "微信自媒体广告，主要针对使用智能手机的中高端人群，以微信的高到达率为手段，主打精准营销，便于品牌价值传播，并且可以实时与用户交互沟通，获取效果反馈。（微信搜索“wemedia”关注我们）",
+                                     "http://weinxincourse.b0.upaiyun.com/bbg.jpg",
+                                     "http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5NDczMzQ0MQ==&appmsgid=10000030&itemidx=1&sign=eef24af3e7848c6d1e92122f516d62f4");
+                echo $resultStr;
+                exit;  
+            }
+          //获取广告案例
+            if($form_EventKey=="Contact")
+            {
+                     
+                $msgType = "text";
+                $resultStr = sprintf($textTpl, $fromUsername, $toUsername, time(), $msgType,"WeMedia官方网站地址，请点击：<a href='http://www.weixin.fm'>WeMedia</a>\n\n商务合作请联系刘小姐，微信号：“lyh111002”");
+                echo $resultStr;
+                exit;  
+            }
+            
+        
+        }
+    }             
+
+
+}
+
+else 
+{
+      echo "Don't receive the message of weixin_server(服务器无法获取到用户信息)";
+      exit;
+}
+
+?>
